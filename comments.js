@@ -2,6 +2,16 @@
 var express = require('express');
 var app = express();
 var fs = require('fs');
+var RateLimit = require('express-rate-limit');
+
+// set up rate limiter: maximum of 100 requests per 15 minutes
+var limiter = RateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // max 100 requests per windowMs
+});
+
+// apply rate limiter to all requests
+app.use(limiter);
 
 // Create server
 app.get('/listUsers', function (req, res) {
